@@ -37,6 +37,8 @@ CREATE TABLE lists_items
 );
 
 /*
-migrate -database "postgresql://postgres:'yourpassword'@localhost:5436/postgres?sslmode=disable" -path migrations up
+миграция - система контроля версии для базы, позволяет переходить от одной структуры БД к другой без потери консистентности
+migrate create -ext sql -dir ./schema -seq init
+migrate -database "postgresql://postgres:yourpassword@localhost:5436/postgres?sslmode=disable" -path migrations up
 
  */
