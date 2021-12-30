@@ -6,18 +6,20 @@ import (
 	"github.com/cookiesvanilli/go_app/pkg/repository"
 	"github.com/cookiesvanilli/go_app/pkg/service"
 	"github.com/joho/godotenv"
-	_ "github.com/lib/pq"
+	_ "github.com/lib/pq" //Импорт библиотеки lib/pq дает нам возможность работать с драйвером Postgres, без него мы просто не сможем подключиться к БД. Именно его мы указали в методе sqlx.Open("postgres", ...).
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"log"
 	"os"
 )
 
 func main() {
+	logrus.SetFormatter(new(logrus.JSONFormatter))
+
 	if err := initConfig(); err != nil {
-		log.Fatalf("error initializing configs: %s", err.Error())
+		logrus.Fatalf("error initializing configs: %s", err.Error())
 	}
 	if err := godotenv.Load(); err != nil {
-		log.Fatalf("Error loading env variables: %s", err.Error())
+		logrus.Fatalf("Error loading env variables: %s", err.Error())
 	}
 
 	//инициализация базы данных
@@ -31,7 +33,7 @@ func main() {
 	})
 
 	if err != nil {
-		log.Fatalf("Failed to initialize db: %s", err.Error())
+		logrus.Fatalf("Failed to initialize db: %s", err.Error())
 	}
 
 	// экземпляр сервера
@@ -41,8 +43,8 @@ func main() {
 
 	srv := new(todo.Server) // .New() Это делается, когда в структуре есть различные поля и мы хотим передать их значения в конструкторе.
 	//Когда у нас пустая структура, создавать конструктор не обязательно, можно воспользоваться стандартной конструкцией new()
-	if err := srv.Run(viper.GetString("8000"), handlers.InitRoutes()); err != nil {
-		log.Fatalf("Error while running http server: %s", err.Error())
+	if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
+		logrus.Fatalf("Error while running http server: %s", err.Error())
 	}
 }
 
@@ -55,3 +57,8 @@ func initConfig() error {
 //docker pull postgres
 //docker run --name=todo-db -e POSTGRES_PASSWORD=12345 -p 5436:5432 -d --rm postgres
 //docker ps
+//docker exec -it
+//docker ps
+//docker exec -it 14354t5y6rye  /bin/bash
+// psql -U postgres
+// select * from users;

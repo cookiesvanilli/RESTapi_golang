@@ -1,17 +1,18 @@
 package service
 
-import "github.com/cookiesvanilli/go_app/pkg/repository"
+import (
+	todo "github.com/cookiesvanilli/go_app"
+	"github.com/cookiesvanilli/go_app/pkg/repository"
+)
 
 type Authorization interface {
-
+	CreateUser(user todo.User) (int, error)
 }
 
 type TodoList interface {
-
 }
 
 type TodoItem interface {
-
 }
 
 type Service struct {
@@ -21,5 +22,7 @@ type Service struct {
 }
 
 func NewService(repos *repository.Repository) *Service {
-	return &Service{}
+	return &Service{
+		Authorization: NewAuthService(repos.Authorization),
+	}
 }
