@@ -55,7 +55,7 @@ func initConfig() error {
 }
 
 //docker pull postgres
-//docker run --name=todo-db -e POSTGRES_PASSWORD=12345 -p 5436:5432 -d --rm postgres
+//docker run --name=todo-db -e POSTGRES_PASSWORD=12345 -p 5436:5432 -d postgres
 //docker ps
 //docker exec -it
 //docker ps
